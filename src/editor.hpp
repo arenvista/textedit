@@ -24,6 +24,8 @@ struct KeyEvent{
 
 class WindowRender{
     //Window Params
+    int m_cursor_x;
+    int m_cursor_y;
     int m_max_height;
     int m_max_width;
     int m_start_height;
@@ -32,6 +34,8 @@ class WindowRender{
 public:
     WindowRender();
     ~WindowRender();
+    void moveCursor(size_t x, size_t y);
+    void directionalMoveCursor(int keycode);
 };
 
 

@@ -7,5 +7,9 @@
 int main(void)
 {
     WindowRender win;
-    getch(); //watis for user input, returns int value of that key
+    win.moveCursor(1, 1);
+    while(true){
+        int res = int(getch());
+        win.directionalMoveCursor(res);
+    }
 }
