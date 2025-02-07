@@ -1,27 +1,22 @@
 #include "editor.hpp"
-
 #include <iostream>
-#include <unistd.h>
-#include <termios.h>
+#include "file_manager.hpp"
 
-
-/* Initialize new terminal i/o settings */
-static struct termios old, new1;
-void initTermios(int echo) {
-    tcgetattr(0, &old); /* grab old terminal i/o settings */
-    new1 = old; /* make new settings same as old settings */
-    new1.c_lflag &= ~ICANON; /* disable buffered i/o */
-    new1.c_lflag &= echo ? ECHO : ~ECHO; /* set echo mode */
-    tcsetattr(0, TCSANOW, &new1); /* use these new terminal i/o settings now */
+WindowRender::WindowRender(){
+    std::cout << "Creating window...\n";
+    initscr(); //initalizes screen & sets up memory
+    noecho();
+    cbreak();
+    getbegyx(stdscr, m_start_height, m_start_width); // max top left corner
+    getmaxyx(stdscr, m_max_height, m_max_width); //gets height/width
+    m_win = newwin(m_max_height, m_max_width, m_start_height, m_start_width);
+    refresh();
+    box(m_win, 0,0);
+    wrefresh(m_win);
+    box(m_win, 0,0);
+    wrefresh(m_win);
 }
 
-/* Restore old terminal i/o settings */
-void resetTermios(void) {
-    tcsetattr(0, TCSANOW, &old);
-}
-
-int readEvent(){
-    char c;
-    read(0, &c, 1);
-    return int(c);
+WindowRender::~WindowRender(){
+    endwin();
 }

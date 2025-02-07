@@ -1,4 +1,5 @@
 #pragma once
+#include <ncurses.h>
 
 struct Event{
     int code;
@@ -8,8 +9,8 @@ struct Event{
 };
 
 enum KeyCode{
-    BACKSPACE = 0, 
-    ENTER = 1,
+    BACKSPACE = 32, 
+    ENTER = 127,
     //More keycodes
 };
 struct KeyEvent{
@@ -18,11 +19,23 @@ struct KeyEvent{
     int eventKind;
     int eventState;
     char keyChar;
-
     void matchEvent(int event);
 };
 
-int readEvent();
+class WindowRender{
+    //Window Params
+    int m_max_height;
+    int m_max_width;
+    int m_start_height;
+    int m_start_width;
+    WINDOW* m_win;
+public:
+    WindowRender();
+    ~WindowRender();
+};
 
+
+int readEvent();
 void initTermios(int echo);
-void resetTermios(void);
+void resetTermios();
+void runEditor();
